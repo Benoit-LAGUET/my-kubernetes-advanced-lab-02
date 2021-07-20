@@ -19,17 +19,24 @@ module "eks" {
   worker_groups = [
     {
       name                          = "worker-group-1"
-      instance_type                 = "t2.small"
+      instance_type                 = "t2.micro"
       additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = 2
+      asg_desired_capacity          = 1
+      asg_max_size                  = 1
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
+      kubelet_extra_args            = "--node-labels=node.kubernetes.io/lifecycle=normal"
     },
     {
       name                          = "worker-group-2"
-      instance_type                 = "t2.medium"
+      instance_type                 = "t2.micro"
       additional_userdata           = "echo foo bar"
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
       asg_desired_capacity          = 1
+      asg_min_size                  = 0
+      asg_max_size                  = 2
+      spot_price                    = "0.0050"
+      kubelet_extra_args            = "--node-labels=node.kubernetes.io/lifecycle=spot"
+      suspended_processes           = ["AZRebalance"]
     },
   ]
 }
