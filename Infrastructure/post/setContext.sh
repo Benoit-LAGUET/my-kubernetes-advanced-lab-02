@@ -1,3 +1,3 @@
 #/bin/bash
 
-aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+aws eks --region $(terraform -chdir=$1 output -raw region) update-kubeconfig --name $(terraform -chdir=$1 output -raw cluster_name)
