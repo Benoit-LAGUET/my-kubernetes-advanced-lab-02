@@ -1,7 +1,6 @@
 #/bin/bash
 
 dirName=`dirname $0`
-echo $dirName
 
 echo "Move to the script directory $dirName"
 cd $dirName
